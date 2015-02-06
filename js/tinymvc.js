@@ -56,19 +56,30 @@
 
 	};
 
+	/* Template */
+
+	Template = function(name) {
+		this.html = $('#' + name + '-template').html();
+	};
+
+	Template.prototype.resolve = function(context) {
+		return this.html;
+	}
+
 	/* View */
-	View = function(model) {
+	View = function(model, elem, template) {
 		// elem, model, and template are expected to be set by subclasses of View
-		this.elem = null,
+		this.elem = elem,
 		this.model = model;
-		this.template = null;
+		this.template = template;
 	};
 
 	View.prototype.render = function() {
 		if (this.template) {
-			var element = $(elem);
+			var element = $(this.elem);
 			if (element) {
-				element[0].innerHtml = $(this.template)[0].innerHtml;
+				var templateObj = new Template(this.template);
+				element.html(templateObj.resolve());
 			}
 		}
 	};
@@ -97,10 +108,31 @@
 
 	// Tiny jquery :)	
 	$ = function(selector) {
-		return document.querySelectorAll(selector);
+		return {
+			html: function(html) {
+				var elems = document.querySelectorAll(selector);
+				var numElems = elems.length;
+				if (html) {
+					for (var i = 0; i < numElems; ++i) {
+						elems[i].innerHTML = html;
+					}
+				} else if (elems.length > 0) {
+					return elems[0].innerHTML;
+				}
+			},
+			append: function(html) {
+				var elems = document.querySelectorAll(selector);
+				var numElems = elems.length;
+				if (html) {
+					for (var i = 0; i < numElems; ++i) {
+						elems[i].innerHTML += html;
+					}
+				}		
+			}
+		}
 	};
 
-	TinyMVC = {
+	window.TinyMVC = {
 		'Model': Model,
 		'View': View,
 		'Events': Events,
