@@ -1,3 +1,3 @@
 window.App = {
-	Views: {}
+    Views: {}
 }

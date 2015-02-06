@@ -1,14 +1,14 @@
 (function() {
 
-	var ContactView;
-	var template = "contact-list";
+    var ContactView;
+    var template = "contact-list";
 
-	ContactView = function(model, elem) {
-		TinyMVC.View.call(this, model, elem, template);
-		this.render();
-	}
+    ContactView = function(model, elem) {
+        TinyMVC.View.call(this, model, elem, template);
+        this.render();
+    }
 
-	ContactView.prototype = Object.create(TinyMVC.View.prototype);
+    ContactView.prototype = Object.create(TinyMVC.View.prototype);
 
-	App.Views.ContactView = ContactView;
+    App.Views.ContactView = ContactView;
 }).call(this);
