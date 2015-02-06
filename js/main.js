@@ -2,10 +2,10 @@
     Author: Emilio Lopez
 */
 
-
 (function() {
 
-    var contactView = new App.Views.ContactView(null, "#contact-list");
+    App.models.contacts = new App.Models.ContactCollection();
+    var contactView = new App.Views.ContactView(App.models.contacts, "#contact-list");
     var actionView = new App.Views.ActionView(null, "#action-list");
     var jsonView = new App.Views.JsonView(null, "#json");
 
