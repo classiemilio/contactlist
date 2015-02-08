@@ -7,6 +7,16 @@
         TinyMVC.View.call(this, model, elem, template);
         model.fetch();
         this.render();
+        if (window.localStorage) {
+            var storedForm = localStorage.getItem("addFormData");
+            if (storedForm && storedForm.length > 0) {
+                storedForm = JSON.parse(storedForm);
+                var form = document.forms[0];
+                form.elements["firstname"].value = storedForm.firstName;
+                form.elements["lastname"].value = storedForm.lastName;
+                form.elements["phonenumber"].value = storedForm.phoneNumber;
+            }
+        }
     };
 
     ContactView.prototype = Object.create(TinyMVC.View.prototype);
@@ -25,6 +35,7 @@
             }));
             that.model.save();
             TinyMVC.Events.trigger("Add:Succeeded");
+            localStorage.setItem("addFormData", "");
             return false;
         });
 
@@ -46,6 +57,14 @@
 
         TinyMVC.$("#contact-list-add-form input").on("keyup", function(evt) {
             TinyMVC.Events.trigger("Add:" + TinyMVC.$(this).data('formattedname') + ":Edited");
+            var form = document.forms[0];
+            if (window.localStorage) {
+                localStorage.setItem("addFormData", JSON.stringify({
+                    firstName: form.elements["firstname"].value,
+                    lastName: form.elements["lastname"].value,
+                    phoneNumber: form.elements["phonenumber"].value
+                }));
+            }
         });
     };
 
