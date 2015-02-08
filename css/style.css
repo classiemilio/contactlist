@@ -49,6 +49,7 @@ button {
 	color: #3A86FA;
 	font-size: 13px;
 	padding: 10px;
+	cursor: pointer;
 }
 
 .container {
@@ -83,9 +84,19 @@ button {
 	padding-top: 20px;
 	padding-bottom: 20px;
 	margin: 0px;
-	text-align: center;
 	color: white;
+	padding: 10px;
+	position: relative;
+}
+
+.contact-list-header h1 {
 	font-weight: 500;
+}
+
+.contact-list-header .export-btn {
+	position: absolute;
+	right: 10px;
+	top: 28px;
 }
 
 .contact-list-footer {
@@ -130,7 +141,7 @@ button {
 }
 
 .contact-list-ul {
-	padding-bottom: 80px;
+	padding-bottom: 154px;
 }
 
 .contact-list-ul li {
@@ -138,6 +149,7 @@ button {
 	border-bottom: solid 1px #ccc;
 	background-color: #f5f8fd;
 	padding: 10px;
+	position: relative;
 }
 
 .contact-list-ul li .contact-img, .contact-list-ul li .contact-info {
@@ -177,6 +189,23 @@ button {
 	font-size: 16px;
 	text-decoration: none;
 }	
+
+.contact-list-ul li:hover .contact-actions {
+	display: block;
+}
+
+.contact-list-ul li .contact-actions {
+	display: none;
+	position: absolute;
+	right: 10px;
+	top: 30px;
+}
+
+.contact-list-ul li .contact-actions button {
+	height: 28px;
+	padding: 5px 9px;
+	cursor: pointer;
+}
 
 .json-container, .action-container {
 	background-color: #48a6fd;

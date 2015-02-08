@@ -14,6 +14,7 @@
     var Model, View, Template, Events, $;
 
     // This shim taken from Crockford: http://javascript.crockford.com/prototypal.html
+    // Most browsers should have it already, but just in case.
     if (typeof Object.create !== 'function') {
       Object.create = function (o) {
         function F() {}
@@ -31,39 +32,26 @@
     
     // function to listen to an event on the model
     Model.prototype.on = function(triggers, callback, context) {
-        triggers = triggers.split(" ");
-        var numTriggers = triggers.length;
-        for (var i = 0; i < numTriggers; ++i) {
-            if (!(triggers[i] in this.listeners)) {
-                this.listeners[triggers[i]] = [];
-            } 
-            this.listeners[triggers[i]].push({
-                callback: callback,
-                context: context
-            });
-        }
+        Events.on(triggers, callback, context, this.listeners);
     };
         // let listeners of event know it triggered
     Model.prototype.trigger = function(event) {
-        var tListeners = this.listeners[event];
-        if (tListeners) {
-            var listenerCount = tListeners.length;
-            for (var i = 0; i < listenerCount; ++i) {
-                var callback = tListeners[i];
-                callback.callback.call(callback.context);
-            }
-        }
+        Events.trigger(event, this.listeners);
     };
 
     Model.prototype.set = function(key, value) {
-        if (attributes[key] !== value) {
-            attributes[key] = value;
+        if (this.attributes[key] !== value) {
+            this.attributes[key] = value;
             this.trigger("change");
         }
     };
 
+    Model.prototype.equals = function(other) {
+        return (other instanceof Model && this.get("_id") === other.get("_id"));
+    };
+
     Model.prototype.get = function(key) {
-        return attributes[key];
+        return this.attributes[key];
     };
 
     // TODO 
@@ -103,14 +91,20 @@
     };
 
     Collection.prototype.remove = function(model) {
+        var idx = -1;
+        if (typeof model == "number") {
+            idx = model;
+        }
+        // TODO finish
         var modelCount = this.models.length;
         for (var i = 0; i < modelCount; ++i) {
-            if (this.models[i]._id == model._id) {
-                this.models.splice(i);
-                this.trigger("remove");
-                return;
+            if (this.models[i].equals(model)) {
+                idx = i;
+                break;
             }
         }
+        this.models.splice(idx);
+        this.trigger("remove");
     };
 
     Collection.prototype.clear = function() {
@@ -207,71 +201,93 @@
         }
     };
 
-    /* Events
-    // Not sure I'll use this
+    /* Events */
     Events = {
-        listenMap: {},
+        listeners: {},
+
         // function to listen to an event
-        on: function(event, callback) {
-            if (!(event in listenMap)) {
-                listenMap[event] = [];
-            } 
-            listenMap[event].push(callback);
+        on: function(triggers, callback, context, listeners) {
+            listeners = listeners || this.listeners;
+            triggers = triggers.split(" ");
+            var numTriggers = triggers.length;
+            for (var i = 0; i < numTriggers; ++i) {
+                if (!(triggers[i] in listeners)) {
+                    listeners[triggers[i]] = [];
+                } 
+                listeners[triggers[i]].push({
+                    callback: callback,
+                    context: context
+                });
+            }
         },
+
         // let listeners of event know it triggered
-        trigger: function(event) {
-            var listeners = listenMap[event];
-            if (listeners) {
-                var listenerCount = listeners.length;
+        trigger: function(event, listeners) {
+            listeners = listeners || this.listeners;
+            var tListeners = listeners[event];
+            if (tListeners) {
+                var listenerCount = tListeners.length;
                 for (var i = 0; i < listenerCount; ++i) {
-                    listeners[i]();
+                    var callback = tListeners[i];
+                    callback.callback.call(callback.context);
                 }
             }
         }
-    };*/
+    };
 
     // Tiny jquery :)   
-    $ = function(selector) {
+    $ = function(elements) {
         return {
             html: function(html) {
-                var elems = document.querySelectorAll(selector);
-                var numElems = elems.length;
-                if (html) {
-                    for (var i = 0; i < numElems; ++i) {
-                        elems[i].innerHTML = html;
-                    }
-                } else if (elems.length > 0) {
-                    return elems[0].innerHTML;
-                }
+                return this.attr("innerHTML", html);
+            },
+            setElements: function() {
+                if (typeof elements == "string") {
+                    elements = document.querySelectorAll(elements);
+                } else if (!(elements instanceof Array)) {
+                    elements = [ elements ];
+                }  
             },
             append: function(html) {
-                var elems = document.querySelectorAll(selector);
-                var numElems = elems.length;
+                this.setElements();
+                var numElems = elements.length;
                 if (html) {
                     for (var i = 0; i < numElems; ++i) {
-                        elems[i].innerHTML += html;
+                        elements[i].innerHTML += html;
                     }
                 }       
             },
             attr: function(attr, value) {
-                var elems = document.querySelectorAll(selector);
-                var numElems = elems.length;
+                this.setElements();
+                var numElems = elements.length;
                 if (value) {
                     for (var i = 0; i < numElems; ++i) {
-                        elems[i].setAttribute(attr, value);
+                        if (attr == "value") {
+                           elements[i].value = value;
+                        } else if (attr == "innerHTML") { 
+                            elements[i].innerHTML = value;
+                        } else {
+                            elements[i].setAttribute(attr, value);
+                        }
                     }    
-                } else if (elems.length > 0) {
-                    return elems[0].getAttribute(attr);
+                } else if (elements.length > 0) {
+                    if (attr == "value") {
+                       return elements[0].value;
+                    } else if (attr == "innerHTML") { 
+                        return elements[0].innerHTML;
+                    } else {
+                        return elements[0].getAttribute(value);
+                    }
                 } 
             },
             data: function(attr, value) {
                 return this.attr("data-" + attr, value);
             },
             on: function(event, callback) {
-                var elems = document.querySelectorAll(selector);
-                var numElems = elems.length;
+                this.setElements(); 
+                var numElems = elements.length;
                 for (var i = 0; i < numElems; ++i) {
-                    elems[i]["on" + event] = function(evt) {
+                    elements[i]["on" + event] = function(evt) {
                         callback.call(this, evt);
                     };
                 }

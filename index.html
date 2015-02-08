@@ -23,9 +23,15 @@
         <!-- Templates -->
         <script type="text/template" class="template" id="contact-list-template">
             <div class="contact-list-container">
-                <h1 class="contact-list-header">
-                    My Contacts
-                </h1>
+                <div class="contact-list-header">
+                    <h1>
+                        My Contacts
+                    </h1>
+                    <button class="export-btn" title="Export Contacts">
+                        Export Contacts
+                        <i class="fa fa-arrow-right"></i>
+                    </button>
+                </div>
                 <ul class="contact-list-ul">
                 <% each model %>
                     <li data-idx="<% print index %>">
@@ -39,6 +45,11 @@
                             <div class="contact-info-phone">
                                 <a href="tel: <% print phoneNumber %> " > <% print phoneNumber %></a>
                             </div>
+                        </div>
+                        <div class="contact-actions">
+                            <button class="remove-contact-btn" data-idx="<% print index %>" title="Remove <% print firstName %>">
+                                X
+                            </button>  
                         </div>
                     </li>
                 <% end %>
@@ -75,7 +86,7 @@
                 </h3>
                 <form id="json-import-form">
                     <div class="form-block">
-                        <textarea rows="16" cols="75" name="json">
+                        <textarea rows="16" cols="75" name="json" id="json-area">
 [{
     "First Name": "George",
     "Last Name": "Clooney",

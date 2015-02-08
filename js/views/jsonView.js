@@ -6,6 +6,19 @@
     JsonView = function(model, elem) {
         TinyMVC.View.call(this, model, elem, template);
         this.render();
+        TinyMVC.Events.on("Export:Clicked", function() {
+            var contacts = App.models.contacts.models;
+            var jsonContacts = [];
+            var numContacts = contacts.length;
+            for (var i = 0; i < numContacts; ++i) {
+                jsonContacts.push({
+                    "First Name": contacts[i].get("firstName"),
+                    "Last Name": contacts[i].get("lastName"),
+                    "Phone Number": contacts[i].get("phoneNumber")
+                })
+            }
+            TinyMVC.$("#json-area").attr("value", JSON.stringify(jsonContacts));
+        });
     }
 
     JsonView.prototype = Object.create(TinyMVC.View.prototype);
