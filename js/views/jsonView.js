@@ -44,6 +44,9 @@
                     phoneNumber: json[i]["Phone Number"]
                 }));
             }
+            if (jsonLen > 0) {
+                App.models.contacts.save();
+            }
             return false;
         })
     }

@@ -91,12 +91,13 @@ button {
 
 .contact-list-header h1 {
 	font-weight: 500;
+	margin: 0;
 }
 
 .contact-list-header .export-btn {
 	position: absolute;
 	right: 10px;
-	top: 28px;
+	top: 12px;
 }
 
 .contact-list-footer {

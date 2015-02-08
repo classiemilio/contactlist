@@ -15,6 +15,13 @@
     Contact.prototype = Object.create(TinyMVC.Model.prototype);
     ContactCollection.prototype = Object.create(TinyMVC.Collection.prototype);
 
+    ContactCollection.prototype.modelClass = Contact;
+
+    // Used for storing and retrieving data
+    ContactCollection.prototype.storageKey = function() {
+    	return "contact_collection";
+    };
+
     App.Models.Contact = Contact;
     App.Models.ContactCollection = ContactCollection;
 

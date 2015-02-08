@@ -23,6 +23,14 @@
       };
     }
 
+    var supportsLocalstorage = function() {
+        try {
+            return 'localStorage' in window && window['localStorage'] !== null;
+        } catch (e) {
+            return false;
+        }
+    };
+
     /* Model */
     Model = function(attributes) {
         this.attributes = attributes || {};
@@ -54,13 +62,31 @@
         return this.attributes[key];
     };
 
-    // TODO 
     Model.prototype.save = function() {
-
+        if (supportsLocalstorage()) {
+            localStorage.setItem(this.storageKey(), JSON.stringify(this.toJson()));
+        }
     };
 
     Model.prototype.fetch = function() {
-
+        if (supportsLocalstorage()) {
+            var jsonStr = localStorage.getItem(this.storageKey());
+            if (jsonStr) {
+                try {
+                    if (this.models && this.modelClass) {
+                        var modelArr = JSON.parse(jsonStr);
+                        var numModels = modelArr.length;
+                        for (var i = 0; i < numModels; ++i) {
+                            this.add(new this.modelClass(modelArr[i].attributes));
+                        }
+                    } else {
+                        this.attributes = JSON.parse(jsonStr);
+                    }
+                    this.trigger("change");
+                }
+                catch (e) {}
+            }
+        }
     };
 
     Model.prototype.toJson = function() {
@@ -71,19 +97,16 @@
         }
     };
 
+    // This is the key used for storing a model. It can be overwritten by subclasses as needed.
+    Model.prototype.storageKey = function() {
+        return this._id;
+    }
+
     Collection = function(models) {
         Model.call(this);
         this.models = models || [];
     }
     Collection.prototype = Object.create(Model.prototype);
-
-    Collection.prototype.save = function() {
-
-    };
-
-    Collection.prototype.fetch = function() {
-
-    };
 
     Collection.prototype.add = function(model) {
         this.models.push(model);

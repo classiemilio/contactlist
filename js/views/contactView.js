@@ -5,6 +5,7 @@
 
     ContactView = function(model, elem) {
         TinyMVC.View.call(this, model, elem, template);
+        model.fetch();
         this.render();
     };
 
@@ -21,6 +22,7 @@
                 lastName: this.elements["lastname"].value,
                 phoneNumber: this.elements["phonenumber"].value
             }));
+            that.model.save();
             return false;
         });
 
@@ -28,6 +30,7 @@
             evt && evt.preventDefault();
             var elem = TinyMVC.$(evt.target || evt.srcElement);
             that.model.remove(elem.data("idx"));
+            that.model.save();
             return false;
         });
 
