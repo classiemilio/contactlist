@@ -18,6 +18,7 @@
                 })
             }
             TinyMVC.$("#json-area").attr("value", JSON.stringify(jsonContacts));
+            TinyMVC.Events.trigger("Export:Succeeded")
         });
     }
 
@@ -27,12 +28,13 @@
         var that = this;
         TinyMVC.View.prototype.render.call(this);
         TinyMVC.$("#json-import-form").on("submit", function(evt) {
+            TinyMVC.Events.trigger("Import:Submitted");
             evt && evt.preventDefault();
             var json = this.elements["json"].value;
             try{
                 json = JSON.parse(json);
             } catch(e){
-                // TODO: show error message
+                TinyMVC.Events.trigger("Import:Failed");
                 return false;
             }
             App.models.contacts.clear();
@@ -47,8 +49,12 @@
             if (jsonLen > 0) {
                 App.models.contacts.save();
             }
+            TinyMVC.Events.trigger("Import:Succeeded");
             return false;
-        })
+        });
+        TinyMVC.$("#json-import-form textarea").on("keyup", function(evt) {
+            TinyMVC.Events.trigger("Json:Edited");
+        });
     }
 
     App.Views.JsonView = JsonView;

@@ -61,15 +61,15 @@
                     <form id="contact-list-add-form">
                         <div class="form-block">
                             <label for="firstname">First Name</label>
-                            <input type="text" required name="firstname" placeholder="George">
+                            <input type="text" required name="firstname" data-formattedname="FirstName" placeholder="George">
                         </div>
                         <div class="form-block">
                             <label for="lastname">Last Name</label>
-                            <input type="text" required name="lastname" placeholder="Clooney">
+                            <input type="text" required name="lastname" data-formattedname="LastName" placeholder="Clooney">
                         </div>
                         <div class="form-block">
                             <label for="phonenumber">Phone #</label>
-                            <input type="tel" required name="phonenumber" placeholder="123-456-7890">
+                            <input type="tel" required name="phonenumber" data-formattedname="PhoneNumber" placeholder="123-456-7890">
                         </div>
                         <button type="submit" class="submit-btn" title="Add Contact">
                             <i class="fa fa-user-plus"></i>
@@ -86,7 +86,7 @@
                 </h3>
                 <form id="json-import-form">
                     <div class="form-block">
-                        <textarea rows="16" cols="75" name="json" id="json-area">
+                        <textarea name="json" id="json-area">
 [{
     "First Name": "George",
     "Last Name": "Clooney",
@@ -108,6 +108,16 @@
                 <h3 class="action-title">
                     Tracked User Actions
                 </h3>
+                <div class="action-list-container">
+                    <ul>
+                        <% eachreverse model %>
+                            <li "action-list-item">
+                                <% print title %>
+                                <span class="timestamp"> (timestamp: <% print timestamp %>)</span>
+                            </li>
+                        <% end %>
+                    </ul>
+                </div>
             </div>
         </script>
         <!-- End Templates -->

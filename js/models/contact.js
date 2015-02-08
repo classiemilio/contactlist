@@ -12,7 +12,6 @@
         TinyMVC.Collection.call(this, models);
     }
 
-    Contact.prototype = Object.create(TinyMVC.Model.prototype);
     ContactCollection.prototype = Object.create(TinyMVC.Collection.prototype);
 
     ContactCollection.prototype.modelClass = Contact;

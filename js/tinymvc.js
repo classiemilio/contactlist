@@ -151,7 +151,7 @@
 
         // Actual templating frameworks have much more complicated Regexes, but this will do for now.
         // After all, this is TinyMVC; we need a TinyRegex.
-        var re = /(<% print (.+?) %>|<% (each|if|unless) (.+?) %>([\s\S]*)<% end %>)/;
+        var re = /(<% print (.+?) %>|<% (each|if|unless|eachreverse) (.+?) %>([\s\S]*)<% end %>)/;
         var match = re.exec(resolved);
         while (match) {
             var matchLength = match[0].length;
@@ -165,12 +165,15 @@
             // match[5]: html block to include/exclude/iterate over
 
             var unless = false;
+            var eachReverse = false;
             switch (match[3]) {
+                case "eachreverse":
+                    eachReverse = true;
                 case "each":
                     var arr = context[match[4]]; // get the object from contect to iterate over
                     if (arr) {
                         var arrLen = arr.length;
-                        for (var i = 0; i < arrLen; ++i) {
+                        for (var i = (eachReverse ? arrLen - 1 : 0); i > -1 && i < arrLen; i = (eachReverse ? i - 1 : i + 1)) {
                             var curContext = arr[i].toJson();
                             curContext.index = i;
                             middle += this.resolve(curContext, match[5]);
@@ -299,7 +302,7 @@
                     } else if (attr == "innerHTML") { 
                         return elements[0].innerHTML;
                     } else {
-                        return elements[0].getAttribute(value);
+                        return elements[0].getAttribute(attr);
                     }
                 } 
             },

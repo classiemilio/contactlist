@@ -226,6 +226,12 @@ button {
 	margin-bottom: 30px;
 }
 
+.json-container textarea {
+	font-size: 14px;
+	width: 550px;
+	height: 200px;
+}
+
 .json-title, .action-title {
 	text-align: center;
 	margin: 0 0 10px 0;
@@ -238,6 +244,23 @@ button {
 	text-align: center;
 }
 
+.action-list-container {
+	width: 530px;
+	height: 200px;
+	background-color: white;
+	overflow-y: scroll;
+	color: black;
+	padding: 10px;
+}
 
+.action-list-container ul li {
+	list-style: none;
+	font-size: 13px;
+}
+
+.action-list-container ul li .timestamp {
+	font-size: 12px;
+	color: #888;
+}
 
 
