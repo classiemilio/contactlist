@@ -115,19 +115,21 @@
 
     Collection.prototype.remove = function(model) {
         var idx = -1;
-        if (typeof model == "number") {
-            idx = model;
-        }
-        // TODO finish
-        var modelCount = this.models.length;
-        for (var i = 0; i < modelCount; ++i) {
-            if (this.models[i].equals(model)) {
-                idx = i;
-                break;
+        if (typeof model == "number" || typeof model == "string") {
+            idx = parseInt(model);
+        } else {
+            var modelCount = this.models.length;
+            for (var i = 0; i < modelCount; ++i) {
+                if (this.models[i].equals(model)) {
+                    idx = i;
+                    break;
+                }
             }
         }
-        this.models.splice(idx);
-        this.trigger("remove");
+        if (idx >= 0) {
+            this.models.splice(idx, 1);
+            this.trigger("remove");
+        }
     };
 
     Collection.prototype.clear = function() {
@@ -155,7 +157,7 @@
         var match = re.exec(resolved);
         while (match) {
             var matchLength = match[0].length;
-            var left = resolved.substring(0, match.index-1);
+            var left = resolved.substring(0, match.index);
             var right = resolved.substring(match.index + matchLength);
             var middle = "";
 

@@ -20,6 +20,16 @@ window.App = {
             'Remove:Clicked': '"Remove Contact" button was clicked.',
             'Remove:Succeeded': '"Remove Contact" succeeded!',
             'Remove:Failed': '"Remove Contact" failed.'
-        }
+        },
+        'Colors': [
+            '#1f77b4',
+            '#ff7f0e',
+            '#7bc950',
+            '#d62728',
+            '#a60067',
+            '#e377c2',
+            '#17becf',
+            '#e7e247'
+        ]
     }
 }

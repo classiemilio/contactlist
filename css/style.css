@@ -52,6 +52,10 @@ button {
 	cursor: pointer;
 }
 
+button:hover {
+	background-color: #eee;
+}
+
 .container {
 	height: 100vh;
 	width: 100vw;
@@ -76,6 +80,7 @@ button {
 
 .contact-list-container {
 	position: relative;
+	overflow: hidden;
 	height: 100%;
 }
 
@@ -127,6 +132,10 @@ button {
 	position: relative;
 }
 
+#contact-list-add-form input {
+	width: 142px;
+}
+
 #contact-list-add-form button[type="submit"] {
 	position: absolute;
 	right: 5px;
@@ -143,14 +152,67 @@ button {
 
 .contact-list-ul {
 	padding-bottom: 154px;
+	position: absolute;
+	top: 63px;
+	bottom: 154px;
+	background-color: #eee;
+	left: 0px;
+	right: 0px;
+	overflow-y: scroll;
 }
 
 .contact-list-ul li {
 	list-style: none;
+	position: relative;
+	height: 87px;
+	width: 100%;
+}
+
+@-webkit-keyframes slideleft {
+    100% { left: 0px; }
+}
+
+@keyframes slideleft {
+    100% { left: 0px; }
+}
+
+@-webkit-keyframes slideup {
+    100% { top: 0px; }
+}
+
+@keyframes slideup {
+    100% { top: 0px; }
+}
+
+.contact-list-ul li .contact-list-item-container {
+	left: 100%;
+	top: 100vh;
+	position: absolute;
 	border-bottom: solid 1px #ccc;
 	background-color: #f5f8fd;
 	padding: 10px;
-	position: relative;
+	width: 380px;
+}
+
+.contact-list-ul li .contact-list-item-container.slideleft {
+	top: 0px;
+	-webkit-animation: slideleft 0.5s forwards;
+    -webkit-animation-delay: 0.1s;
+    animation: slideleft 0.5s forwards;
+    animation-delay: 0.1s;
+}
+
+.contact-list-ul li .contact-list-item-container.slideup {
+	left: 0px;
+	-webkit-animation: slideup 0.5s forwards;
+    -webkit-animation-delay: 0.1s;
+    animation: slideup 0.5s forwards;
+    animation-delay: 0.1s;
+}
+
+.contact-list-ul li .contact-list-item-container.slidenone {
+	left: 0px;
+	top: 0px;
 }
 
 .contact-list-ul li .contact-img, .contact-list-ul li .contact-info {
@@ -163,13 +225,14 @@ button {
 	-webkit-border-radius: 10px;
 	-moz-border-radius: 10px;
 	border-radius: 10px;
-	border:1px solid #545454;
+	border:1px solid #48a6fd;
 	overflow: hidden;
 	height: 64px;
 	width: 64px;
 	color: #48a6fd;
 	font-size: 64px;
 	text-align: center;
+	background-color: #EEF0F2;
 }
 
 .contact-list-ul li .contact-img i {
@@ -183,6 +246,10 @@ button {
 .contact-list-ul li .contact-info .contact-info-name {
 	font-weight: bold;
 	font-size: 24px;
+	width: 260px;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
 }
 
 .contact-list-ul li .contact-info .contact-info-phone {
@@ -199,13 +266,18 @@ button {
 	display: none;
 	position: absolute;
 	right: 10px;
-	top: 30px;
+	top: 26px;
 }
 
 .contact-list-ul li .contact-actions button {
-	height: 28px;
-	padding: 5px 9px;
+	height: 32px;
+	padding: 2px 7px;
 	cursor: pointer;
+	font-size: 22px;
+}
+
+.contact-list-ul li .contact-actions .remove-contact-btn i {
+	color: #FF331F;
 }
 
 .json-container, .action-container {

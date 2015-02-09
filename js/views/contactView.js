@@ -24,15 +24,19 @@
     ContactView.prototype.render = function() {
         var that = this;
         TinyMVC.View.prototype.render.call(this);
-        
+
         TinyMVC.$("#contact-list-add-form").on("submit", function(evt) {
             evt && evt.preventDefault();
             TinyMVC.Events.trigger("Add:Submitted");
-            that.model.add(new App.Models.Contact({
+            var newContact = new App.Models.Contact({
                 firstName: this.elements["firstname"].value,
                 lastName: this.elements["lastname"].value,
-                phoneNumber: this.elements["phonenumber"].value
-            }));
+                phoneNumber: this.elements["phonenumber"].value,
+                slide: "up",
+                color: App.consts.Colors[Math.floor(Math.random()*App.consts.Colors.length)]
+            });
+            that.model.add(newContact);
+            newContact.set("slide", "none");
             that.model.save();
             TinyMVC.Events.trigger("Add:Succeeded");
             localStorage.setItem("addFormData", "");
@@ -40,13 +44,15 @@
         });
 
         TinyMVC.$(".remove-contact-btn").on("click", function(evt) {
-            evt && evt.preventDefault();
             var elem = TinyMVC.$(evt.target || evt.srcElement);
             TinyMVC.Events.trigger("Remove:Clicked");
-            that.model.remove(elem.data("idx"));
-            that.model.save();
-            TinyMVC.Events.trigger("Remove:Succeeded");
-            return false;
+            var idx = elem.data("idx");
+            if (idx) {
+                that.model.remove(elem.data("idx"));
+                that.model.save();
+                TinyMVC.Events.trigger("Remove:Succeeded");
+                return true;
+            }
         });
 
         TinyMVC.$(".export-btn").on("click", function(evt) {

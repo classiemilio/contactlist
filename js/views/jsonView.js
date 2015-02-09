@@ -40,16 +40,23 @@
             App.models.contacts.clear();
             var jsonLen = json.length;
             for (var i = 0; i < jsonLen; ++i) {
-                App.models.contacts.add(new App.Models.Contact({
+                var newContact = new App.Models.Contact({
                     firstName: json[i]["First Name"],
                     lastName: json[i]["Last Name"],
-                    phoneNumber: json[i]["Phone Number"]
-                }));
+                    phoneNumber: json[i]["Phone Number"],
+                    slide: "left",
+                    color: App.consts.Colors[Math.floor(Math.random()*App.consts.Colors.length)]
+                });
+                App.models.contacts.add(newContact);
+            }
+            TinyMVC.Events.trigger("Import:Succeeded");
+            var numContacts = App.models.contacts.models.length;
+            for (i = 0; i < numContacts; ++i) {
+                App.models.contacts.models[i].set("slide", "none");
             }
             if (jsonLen > 0) {
                 App.models.contacts.save();
             }
-            TinyMVC.Events.trigger("Import:Succeeded");
             return false;
         });
         TinyMVC.$("#json-import-form textarea").on("keyup", function(evt) {

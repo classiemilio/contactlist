@@ -35,21 +35,23 @@
                 <ul class="contact-list-ul">
                 <% each model %>
                     <li data-idx="<% print index %>">
-                        <div class="contact-img">
-                            <i class="fa fa-user"></i>
-                        </div>
-                        <div class="contact-info">
-                            <div class="contact-info-name">
-                                <% print firstName %>&nbsp;<% print lastName %>
+                        <div class="contact-list-item-container slide<% print slide %>" >
+                            <div class="contact-img">
+                                <i class="fa fa-user" style="color: <% print color %>"></i>
                             </div>
-                            <div class="contact-info-phone">
-                                <a href="tel: <% print phoneNumber %> " > <% print phoneNumber %></a>
+                            <div class="contact-info">
+                                <div class="contact-info-name">
+                                    <% print firstName %>&nbsp;<% print lastName %>
+                                </div>
+                                <div class="contact-info-phone">
+                                    <a href="tel: <% print phoneNumber %> " > <% print phoneNumber %></a>
+                                </div>
                             </div>
-                        </div>
-                        <div class="contact-actions">
-                            <button class="remove-contact-btn" data-idx="<% print index %>" title="Remove <% print firstName %>">
-                                X
-                            </button>  
+                            <div class="contact-actions">
+                                <button class="remove-contact-btn" data-idx="<% print index %>" title="Remove <% print firstName %>">
+                                    <i data-idx="<% print index %>" class="fa fa-trash-o"></i>
+                                </button>  
+                            </div>
                         </div>
                     </li>
                 <% end %>
@@ -69,7 +71,8 @@
                         </div>
                         <div class="form-block">
                             <label for="phonenumber">Phone #</label>
-                            <input type="tel" required name="phonenumber" data-formattedname="PhoneNumber" placeholder="123-456-7890">
+                            <!-- The regex below was taken from http://stackoverflow.com/questions/123559/a-comprehensive-regex-for-phone-number-validation -->
+                            <input type="tel" required name="phonenumber" pattern="(?:(?:\+?1\s*(?:[.-]\s*)?)?(?:\(\s*([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9])\s*\)|([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9]))\s*(?:[.-]\s*)?)?([2-9]1[02-9]|[2-9][02-9]1|[2-9][02-9]{2})\s*(?:[.-]\s*)?([0-9]{4})(?:\s*(?:#|x\.?|ext\.?|extension)\s*(\d+))?$" data-formattedname="PhoneNumber" placeholder="555-555-5555">
                         </div>
                         <button type="submit" class="submit-btn" title="Add Contact">
                             <i class="fa fa-user-plus"></i>
@@ -90,7 +93,7 @@
 [{
     "First Name": "Brett",
     "Last Name": "Hellman",
-    "Phone Number": "123-456-7890"
+    "Phone Number": "555-555-5555"
 }]
                         </textarea>
                     </div>
