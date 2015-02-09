@@ -153,7 +153,7 @@
 
         // Actual templating frameworks have much more complicated Regexes, but this will do for now.
         // After all, this is TinyMVC; we need a TinyRegex.
-        var re = /(<% print (.+?) %>|<% (each|if|unless|eachreverse) (.+?) %>([\s\S]*)<% end %>)/;
+        var re = /(<% print (.+?) %>|<% (each|if|unless|eachreverse|empty) (.+?) %>([\s\S]*?)<% end %>)/;
         var match = re.exec(resolved);
         while (match) {
             var matchLength = match[0].length;
@@ -182,6 +182,12 @@
                         }
                     }
                     break
+                case "empty":
+                    var attr = context[match[4]];
+                    if (!attr || attr.length == 0) {
+                        middle += this.resolve(context, match[5]);
+                    }
+                    break;
                 case "unless":
                     unless = true;
                 case "if":

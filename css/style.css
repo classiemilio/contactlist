@@ -151,7 +151,6 @@ button:hover {
 }
 
 .contact-list-ul {
-	padding-bottom: 154px;
 	position: absolute;
 	top: 63px;
 	bottom: 154px;
@@ -278,6 +277,28 @@ button:hover {
 
 .contact-list-ul li .contact-actions .remove-contact-btn i {
 	color: #FF331F;
+}
+
+.contact-list-ul .no-contacts {
+	text-align: center;
+	display: table;
+	height: 100%;
+	font-size: 18px;
+	padding: 0px 10px;
+	color: #48a6fd;
+	width: 380px;
+}
+
+.contact-list-ul .no-contacts .no-contacts-container {
+	display: table-cell;
+	text-align: center;
+	vertical-align: middle;
+}
+
+.contact-list-ul .no-contacts i {
+	font-size: 64px;
+	color: #3A86FA;
+	display: block;
 }
 
 .json-container, .action-container {

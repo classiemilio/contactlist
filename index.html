@@ -55,6 +55,14 @@
                         </div>
                     </li>
                 <% end %>
+                <% empty model %>
+                    <li class="no-contacts">
+                        <div class="no-contacts-container">
+                            <i class="fa fa-phone"></i>
+                            <p>You haven&#39;t added any contacts yet! <strong>Add one</strong> below or <strong>import</strong> from the JSON textarea on the right.</p>
+                        </div>
+                    </li>
+                <% end %>
                 </ul>
                 <div class="contact-list-footer">
                     <h3 class="contact-list-add-title">
@@ -94,6 +102,11 @@
     "First Name": "Brett",
     "Last Name": "Hellman",
     "Phone Number": "555-555-5555"
+},
+{
+    "First Name": "Ron",
+    "Last Name": "Adams",
+    "Phone Number": "666-666-6666"
 }]
                         </textarea>
                     </div>
